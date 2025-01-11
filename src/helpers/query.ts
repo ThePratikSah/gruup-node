@@ -1,7 +1,6 @@
 import { prisma } from "..";
 
 export async function getRestaurantData(shortname: string) {
-  // get restaurant data based on shortname
   const restaurant = await prisma.restaurant.findUnique({
     where: {
       shortname,
@@ -12,14 +11,14 @@ export async function getRestaurantData(shortname: string) {
     throw new Error("Restaurant not found");
   }
 
-  // get menu items for the restaurant
   const menu_items = await prisma.$queryRaw`
     SELECT 
       "MenuItem".*, 
       "Category"."name" AS "category",
       "MenuItem"."isVeg" AS "is_vegetarian",
       "RestaurantMenuItem"."price" AS "price",
-      "RestaurantMenuItem"."sellingPrice" AS "sellingprice"
+      "RestaurantMenuItem"."sellingPrice" AS "sellingprice",
+      "RestaurantMenuItem"."isAvailable" AS "available"
     FROM 
       "MenuItem"
     INNER JOIN 
