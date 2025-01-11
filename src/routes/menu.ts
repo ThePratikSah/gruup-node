@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { menuController } from "../controllers/menu";
+import { validateData } from "../middleware/menu";
+import { restaurantSchema } from "../validator/restaurant";
 
-export const menu = Router();
+export const menuRouter = Router();
 
-menu.get("/:shortname", menuController);
+menuRouter.get("/:shortname", validateData(restaurantSchema), menuController);

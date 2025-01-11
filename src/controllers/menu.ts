@@ -4,10 +4,12 @@ import { getRestaurantData } from "../helpers/query";
 export async function menuController(req: Request, res: Response) {
   const { shortname } = req.params;
 
-  if (!shortname) {
-    return res.status(400).json({ error: "Shortname is required" });
+  try {
+    const restaurant = await getRestaurantData(shortname);
+    return res.json(restaurant);
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ error, message: "Failed to fetch data of restaurant" });
   }
-
-  const restaurant = await getRestaurantData(shortname);
-  return res.json(restaurant);
 }
