@@ -47,7 +47,7 @@ model RestaurantMenuItem {
   restaurantId Int
   menuItemId   Int
   price        Int
-  sellingPrice Int
+  sellingPrice Int?
   isAvailable  Boolean @default(true) // Flag to indicate if the menu item is available at this restaurant
 
   restaurant Restaurant @relation(fields: [restaurantId], references: [id])

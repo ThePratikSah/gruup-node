@@ -9,5 +9,5 @@ export async function menuController(req: Request, res: Response) {
   }
 
   const restaurant = await getRestaurantData(shortname);
-  return res.json({ restaurant });
+  return res.json(restaurant);
 }

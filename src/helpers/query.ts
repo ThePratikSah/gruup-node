@@ -1,27 +1,46 @@
 import { prisma } from "..";
 
 export async function getRestaurantData(shortname: string) {
-  return await prisma.restaurant.findFirst({
+  // get restaurant data based on shortname
+  const restaurant = await prisma.restaurant.findUnique({
     where: {
       shortname,
     },
-    select: {
-      id: true,
-      name: true,
-      address: true,
-      phone: true,
-      shortname: true,
-      logo: true,
-      RestaurantMenuItem: {
-        where: {
-          isAvailable: true,
-        },
-        include: {
-          menuItem: true,
-        },
-      },
-    },
   });
+
+  if (!restaurant) {
+    throw new Error("Restaurant not found");
+  }
+
+  // get menu items for the restaurant
+  const menu_items = await prisma.$queryRaw`
+    SELECT 
+      "MenuItem".*, 
+      "Category"."name" AS "category",
+      "MenuItem"."isVeg" AS "is_vegetarian",
+      "RestaurantMenuItem"."price" AS "price",
+      "RestaurantMenuItem"."sellingPrice" AS "sellingprice"
+    FROM 
+      "MenuItem"
+    INNER JOIN 
+      "RestaurantMenuItem" 
+    ON 
+      "RestaurantMenuItem"."menuItemId" = "MenuItem"."id"
+    INNER JOIN 
+      "Category" 
+    ON 
+      "Category"."id" = "MenuItem"."categoryId"
+    WHERE 
+      "RestaurantMenuItem"."restaurantId" = ${restaurant.id}
+    AND "RestaurantMenuItem"."isAvailable" = true;
+  `;
+
+  const dataToReturn = {
+    ...restaurant,
+    menu_items,
+  };
+
+  return [dataToReturn];
 }
 
 export async function createRestaurant() {
@@ -50,15 +69,4 @@ export async function createMenuItem(
   category: any,
   description: string,
   isVeg: boolean
-) {
-  await prisma.menuItem.create({
-    data: {
-      name,
-      image,
-      price,
-      category,
-      description,
-      isVeg,
-    },
-  });
-}
+) {}
