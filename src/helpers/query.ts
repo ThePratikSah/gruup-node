@@ -18,7 +18,8 @@ export async function getRestaurantData(shortname: string) {
       "MenuItem"."isVeg" AS "is_vegetarian",
       "RestaurantMenuItem"."price" AS "price",
       "RestaurantMenuItem"."sellingPrice" AS "sellingprice",
-      "RestaurantMenuItem"."isAvailable" AS "available"
+      "RestaurantMenuItem"."isAvailable" AS "available",
+      "RestaurantMenuItem"."id" AS "menuitemid"
     FROM 
       "MenuItem"
     INNER JOIN 
@@ -30,8 +31,7 @@ export async function getRestaurantData(shortname: string) {
     ON 
       "Category"."id" = "MenuItem"."categoryId"
     WHERE 
-      "RestaurantMenuItem"."restaurantId" = ${restaurant.id}
-    AND "RestaurantMenuItem"."isAvailable" = true;
+      "RestaurantMenuItem"."restaurantId" = ${restaurant.id};
   `;
 
   const dataToReturn = {
