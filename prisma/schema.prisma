@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
+
+model Restaurant {
+  id        Int     @id @default(autoincrement())
+  name      String
+  logo      String?
+  address   String
+  phone     String
+  shortname String  @unique
+
+  RestaurantMenuItem RestaurantMenuItem[]
+}
+
+model Category {
+  id       Int        @id @default(autoincrement())
+  name     String
+  MenuItem MenuItem[]
+}
+
+model MenuItem {
+  id          Int      @id @default(autoincrement())
+  name        String
+  image       String
+  categoryId  Int
+  description String?
+  isVeg       Boolean  @default(true)
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  RestaurantMenuItem RestaurantMenuItem[]
+}
+
+model RestaurantMenuItem {
+  id           Int     @id @default(autoincrement())
+  restaurantId Int
+  menuItemId   Int
+  price        Int
+  sellingPrice Int
+  isAvailable  Boolean @default(true) // Flag to indicate if the menu item is available at this restaurant
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  menuItem   MenuItem   @relation(fields: [menuItemId], references: [id])
+
+  @@unique([restaurantId, menuItemId]) // Ensure a unique combination of restaurant and menu item
+}
