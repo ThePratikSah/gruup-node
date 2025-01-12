@@ -5,7 +5,6 @@
   "scripts": {
     "start": "nodemon",
     "build": "tsc",
-    "seed": "ts-node prisma/seeder.ts",
     "serve": "node dist/src/index.js"
   },
   "keywords": [],
