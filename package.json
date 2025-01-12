@@ -6,7 +6,7 @@
     "start": "nodemon",
     "build": "tsc",
     "seed": "ts-node prisma/seeder.ts",
-    "serve": "node dist/index.js"
+    "serve": "node dist/src/index.js"
   },
   "keywords": [],
   "author": "",
