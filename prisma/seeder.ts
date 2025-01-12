@@ -4,13 +4,6 @@ const prisma = new PrismaClient();
 
 async function main() {
   console.log("Seeding the database...");
-  // dropping all collections
-  await prisma.$transaction([
-    prisma.category.deleteMany(),
-    prisma.menuItem.deleteMany(),
-    prisma.restaurant.deleteMany(),
-    prisma.user.deleteMany(),
-  ]);
 
   // Create Users
   await prisma.user.create({
