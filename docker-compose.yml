@@ -13,7 +13,7 @@ services:
     volumes:
       - ./src:/home/node/app/src
       - ./nodemon.json:/home/node/app/nodemon.json
-    command: sh -c "npx prisma migrate deploy && npx prisma generate && npm run start"
+    command: sh -c "pwd && ls -la && npx prisma migrate deploy && npx prisma generate && npm run start"
 
   db:
     image: postgres:15
