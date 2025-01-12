@@ -1,24 +1,23 @@
 #Build stage
-FROM node:20-alpine
+FROM node:20-alpine as base
 
 # Set working directory
-WORKDIR /app
+WORKDIR /home/node/app
 
 # Install dependencies
-COPY package*.json .
-RUN npm install
+COPY package*.json ./
+
+RUN npm i
 
 # Copy the rest of the app
 COPY . .
 
-# Install Prisma CLI globally
-RUN npm install -g prisma
+FROM base as production
+
+ENV NODE_PATH=./dist
 
 # Build TypeScript
 RUN npm run build
 
-# Expose app port
-EXPOSE 3000
-
-# Default command
-CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma generate && npm run serve"]
+# Install Prisma CLI globally
+RUN npm install -g prisma

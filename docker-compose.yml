@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: base
     ports:
       - '3000:3000'
     env_file:
@@ -10,8 +11,9 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/app
-    command: sh -c "npm run build && npx prisma migrate deploy && npx prisma generate && npm run serve"
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    command: sh -c "npx prisma migrate deploy && npx prisma generate && npm run start"
 
   db:
     image: postgres:15
