@@ -1,11 +1,11 @@
-# Base image
+#Build stage
 FROM node:20-alpine
 
 # Set working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install dependencies
-COPY package.json package-lock.json ./
+COPY package*.json .
 RUN npm install
 
 # Copy the rest of the app

@@ -10,8 +10,7 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - .:/app
     command: sh -c "npm run build && npx prisma migrate deploy && npx prisma generate && npm run serve"
 
   db:
