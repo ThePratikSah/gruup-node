@@ -5,20 +5,24 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding the database...");
 
-  // Create Users
-  await prisma.user.create({
-    data: {
-      email: "user1@example.com",
-      name: "User One",
-    },
-  });
+  try {
+    // Create Users
+    await prisma.user.create({
+      data: {
+        email: "user1@example.com",
+        name: "User One",
+      },
+    });
 
-  await prisma.user.create({
-    data: {
-      email: "user2@example.com",
-      name: "User Two",
-    },
-  });
+    await prisma.user.create({
+      data: {
+        email: "user2@example.com",
+        name: "User Two",
+      },
+    });
+  } catch (error) {
+    console.log("Error creating Users", error);
+  }
 
   // Create Restaurants
   const r1 = await prisma.restaurant.create({
