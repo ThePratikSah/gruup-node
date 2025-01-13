@@ -1,6 +1,12 @@
-import { prisma } from "..";
+import { client, prisma } from "..";
 
 export async function getRestaurantData(shortname: string) {
+  // check for restaurant in cache first
+  const getDataFromCache = await client.get(shortname);
+  if (getDataFromCache) {
+    return JSON.parse(getDataFromCache);
+  }
+
   const restaurant = await prisma.restaurant.findUnique({
     where: {
       shortname,
@@ -38,6 +44,8 @@ export async function getRestaurantData(shortname: string) {
     ...restaurant,
     menu_items,
   };
+
+  await client.set(shortname, JSON.stringify(dataToReturn), { EX: 5 * 60 }); // 5 minutes ttl
 
   return [dataToReturn];
 }

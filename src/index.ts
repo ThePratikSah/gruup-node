@@ -1,10 +1,29 @@
 import { PrismaClient } from "@prisma/client";
+import { createClient } from "redis";
 import app from "./app";
 import { PORT } from "./configs";
 
 export const prisma = new PrismaClient();
+export const client = createClient({
+  socket: {
+    reconnectStrategy: function (retries) {
+      if (retries > 20) {
+        console.log(
+          "Too many attempts to reconnect. Redis connection was terminated"
+        );
+        return new Error("Too many retries.");
+      } else {
+        return retries * 500;
+      }
+    },
+    connectTimeout: 10000,
+  },
+});
+client.on("error", (error) => console.error("Redis client error:", error));
+client.on("connect", () => console.log("Redis Client Connected"));
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
+  await client.connect();
   console.log(`Server is running on port ${PORT}`);
 });
 
