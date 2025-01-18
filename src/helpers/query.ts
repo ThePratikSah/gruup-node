@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { client, prisma } from "..";
 
 export async function getRestaurantData(shortname: string) {
@@ -50,13 +51,20 @@ export async function getRestaurantData(shortname: string) {
   return [dataToReturn];
 }
 
-export async function createRestaurant() {
+export async function createRestaurant({
+  name,
+  address,
+  phone,
+  shortname,
+  logo,
+}: Prisma.RestaurantCreateInput) {
   return await prisma.restaurant.create({
     data: {
-      name: "Pratik Ji Ka Dhaba",
-      address: "Banglore, Karnataka",
-      phone: "8708708708",
-      shortname: "pratik-ji-ka-dhaba",
+      name,
+      address,
+      phone,
+      shortname,
+      logo,
     },
   });
 }
