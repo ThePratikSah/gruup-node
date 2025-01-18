@@ -81,19 +81,19 @@ export async function getCategories() {
   return await prisma.category.findMany();
 }
 
-export async function createMenuItem({
+export async function createNewMenuItem({
   name,
   image,
   description,
-  category,
+  categoryId,
   isVeg,
-}: Prisma.MenuItemCreateInput) {
+}: Prisma.MenuItemUncheckedCreateInput) {
   return await prisma.menuItem.create({
     data: {
       name,
       image,
       description,
-      category,
+      categoryId,
       isVeg,
     },
   });
