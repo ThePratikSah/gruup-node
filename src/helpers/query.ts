@@ -98,3 +98,29 @@ export async function createNewMenuItem({
     },
   });
 }
+
+export async function bulkCreateMenuItem(
+  menuItemPayload: Prisma.MenuItemUncheckedCreateInput[]
+) {
+  return await prisma.menuItem.createMany({
+    data: menuItemPayload,
+  });
+}
+
+export async function addItemToRestaurant({
+  price,
+  menuItemId,
+  isAvailable,
+  sellingPrice,
+  restaurantId,
+}: Prisma.RestaurantMenuItemUncheckedCreateInput) {
+  return await prisma.restaurantMenuItem.create({
+    data: {
+      price,
+      menuItemId,
+      isAvailable,
+      sellingPrice,
+      restaurantId,
+    },
+  });
+}
