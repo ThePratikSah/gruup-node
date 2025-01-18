@@ -11,6 +11,8 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+
+  UserRestaurant UserRestaurant[]
 }
 
 model Restaurant {
@@ -22,6 +24,25 @@ model Restaurant {
   shortname String  @unique
 
   RestaurantMenuItem RestaurantMenuItem[]
+  UserRestaurant     UserRestaurant[]
+}
+
+model UserRestaurant {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  restaurantId Int
+  role         UserRole @default(USER)
+
+  user       User       @relation(fields: [userId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+
+  @@unique([userId, restaurantId]) // Ensures a user cannot be assigned to the same restaurant multiple times
+}
+
+enum UserRole {
+  OWNER
+  MANAGER
+  USER
 }
 
 model Category {
