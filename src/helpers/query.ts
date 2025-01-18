@@ -70,18 +70,31 @@ export async function createRestaurant({
 }
 
 export async function createCategory(name: string) {
-  await prisma.category.create({
+  return await prisma.category.create({
     data: {
       name,
     },
   });
 }
 
-export async function createMenuItem(
-  name: string,
-  image: string,
-  price: number,
-  category: any,
-  description: string,
-  isVeg: boolean
-) {}
+export async function getCategories() {
+  return await prisma.category.findMany();
+}
+
+export async function createMenuItem({
+  name,
+  image,
+  description,
+  category,
+  isVeg,
+}: Prisma.MenuItemCreateInput) {
+  return await prisma.menuItem.create({
+    data: {
+      name,
+      image,
+      description,
+      category,
+      isVeg,
+    },
+  });
+}
