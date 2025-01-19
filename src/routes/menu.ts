@@ -6,6 +6,7 @@ import {
 } from "../controllers/menu";
 import { validateData } from "../middleware/dataValidator";
 import { menuItemSchema, restaurantSchema } from "../validator/validator";
+import { authenticate } from "../middleware/auth";
 
 export const menuRouter = Router();
 
@@ -16,6 +17,7 @@ menuRouter.get(
 );
 menuRouter.post(
   "/menu-item",
+  authenticate,
   validateData(menuItemSchema, "body"),
   createMenuItem
 );
