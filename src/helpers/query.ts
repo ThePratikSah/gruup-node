@@ -125,9 +125,11 @@ export async function addItemToRestaurant({
   });
 }
 
-export async function registerNewUser(
-  payload: Prisma.UserUncheckedCreateInput
-) {
+export async function registerNewUser(payload: {
+  name: string;
+  email: string;
+  password: string;
+}) {
   return await prisma.user.create({
     data: payload,
   });
