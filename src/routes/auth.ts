@@ -19,7 +19,7 @@ authRouter.post("/login", async (req, res) => {
     return res.status(404).json({ message: "user or password is invalid" });
   }
 
-  if (!user.password) {
+  if (!user?.password) {
     return res
       .status(404)
       .json({ message: "user created without password, contact admin" });
