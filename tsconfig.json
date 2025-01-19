@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": null,
+    "strict": false,
     "skipLibCheck": true
   }
 }
