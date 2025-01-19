@@ -124,3 +124,19 @@ export async function addItemToRestaurant({
     },
   });
 }
+
+export async function registerNewUser(
+  payload: Prisma.UserUncheckedCreateInput
+) {
+  return await prisma.user.create({
+    data: payload,
+  });
+}
+
+export async function findUserByEmail(email: string) {
+  return await prisma.user.findFirstOrThrow({
+    where: {
+      email,
+    },
+  });
+}

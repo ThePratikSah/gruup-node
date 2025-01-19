@@ -37,3 +37,13 @@ export const addNewRestaurantSchema = z.object({
     required_error: "Short name is required",
   }),
 });
+
+export const addNewUserSchema = z.object({
+  name: z.string({
+    required_error: "Name is required",
+  }),
+  email: z.string({
+    required_error: "Email is required",
+  }),
+  password: z.string().optional(),
+});
