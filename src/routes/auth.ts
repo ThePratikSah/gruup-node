@@ -19,7 +19,7 @@ authRouter.post("/login", async (req, res) => {
     return res.status(404).json({ message: "user or password is invalid" });
   }
 
-  if (!user?.password) {
+  if (!user.password) {
     return res
       .status(404)
       .json({ message: "user created without password, contact admin" });
@@ -51,7 +51,11 @@ authRouter.post(
     };
 
     const hashedPassword = await hashString(password!);
-    await registerNewUser({ email, name, password: hashedPassword });
-    res.status(201).json({ message: "User registered successfully" });
+    const newUser = await registerNewUser({
+      email,
+      name,
+      password: hashedPassword,
+    });
+    res.status(201).json({ message: "User registered successfully", newUser });
   }
 );
